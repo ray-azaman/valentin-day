@@ -54,11 +54,11 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* -- Candy Pink Valentine Theme -- */
+/* -- Base Theme (overridden by JS theme system) -- */
 :root {
   --radius: 1rem;
 
-  /* candy pink palette */
+  /* Fallback palette — JS injects actual values at runtime */
   --valentine-pink: #ff6b9d;
   --valentine-hot: #e91e8c;
   --valentine-blush: #fff0f5;
@@ -118,51 +118,131 @@
   }
 }
 
-/* Floating hearts animation */
+/* ═══════════════════════════════════════════════════ */
+/*          ANIMATION KEYFRAMES — ALL STYLES          */
+/* ═══════════════════════════════════════════════════ */
+
+/* --- Float particles --- */
 @keyframes float-up {
-  0% {
-    transform: translateY(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) rotate(720deg) scale(0);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(720deg) scale(0); opacity: 0; }
+}
+@keyframes float-down {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(-720deg) scale(0); opacity: 0; }
+}
+@keyframes float-mixed {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  25% { transform: translate(30px, -30vh) rotate(180deg) scale(0.8); opacity: 0.8; }
+  50% { transform: translate(-20px, -60vh) rotate(360deg) scale(0.6); opacity: 0.6; }
+  100% { transform: translate(10px, -100vh) rotate(540deg) scale(0); opacity: 0; }
 }
 
+/* --- Entry animations --- */
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce-in {
+  0% { opacity: 0; transform: scale(0.3) translateY(40px); }
+  50% { opacity: 1; transform: scale(1.05) translateY(-10px); }
+  70% { transform: scale(0.95) translateY(5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes glitch-in {
+  0% { opacity: 0; transform: translate(-5px, 5px) skewX(-5deg); filter: hue-rotate(90deg); }
+  20% { opacity: 0.8; transform: translate(3px, -3px) skewX(3deg); filter: hue-rotate(0deg); }
+  40% { opacity: 0.6; transform: translate(-2px, 2px) skewX(-2deg); filter: hue-rotate(180deg); }
+  60% { opacity: 0.9; transform: translate(1px, -1px) skewX(1deg); filter: hue-rotate(0deg); }
+  80% { opacity: 1; transform: translate(-1px, 0) skewX(0deg); }
+  100% { opacity: 1; transform: translate(0) skewX(0deg); filter: hue-rotate(0deg); }
+}
+@keyframes elastic-in {
+  0% { opacity: 0; transform: scale(0.4); }
+  40% { opacity: 1; transform: scale(1.15); }
+  60% { transform: scale(0.9); }
+  80% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- Looping animations --- */
 @keyframes pulse-heart {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.2); }
 }
-
 @keyframes wiggle {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--t-glow, rgba(255,107,157,0.2)), 0 0 40px var(--t-glow, rgba(255,107,157,0.2)); }
+  50% { box-shadow: 0 0 40px var(--t-glow, rgba(255,107,157,0.4)), 0 0 80px var(--t-glow, rgba(255,107,157,0.3)); }
+}
+@keyframes typewriter-cursor {
+  0%, 100% { border-right-color: transparent; }
+  50% { border-right-color: var(--t-primary, #ff6b9d); }
+}
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes glitch-flicker {
+  0%, 100% { opacity: 1; transform: translate(0); }
+  10% { opacity: 0.8; transform: translate(-2px, 1px); }
+  20% { opacity: 1; transform: translate(1px, -1px); }
+  30% { opacity: 0.9; transform: translate(-1px, 2px); }
+  50% { opacity: 1; transform: translate(0); }
 }
 
-.animate-float-up {
-  animation: float-up linear forwards;
+/* ═══════════════════════════ */
+/*     ANIMATION CLASSES       */
+/* ═══════════════════════════ */
+
+.animate-float-up { animation: float-up linear forwards; }
+.animate-float-down { animation: float-down linear forwards; }
+.animate-float-mixed { animation: float-mixed linear forwards; }
+
+.animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+.animate-bounce-in { animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+.animate-glitch-in { animation: glitch-in 0.6s ease-out forwards; }
+.animate-elastic-in { animation: elastic-in 0.9s ease-out forwards; }
+
+.animate-pulse-heart { animation: pulse-heart 1.5s ease-in-out infinite; }
+.animate-wiggle { animation: wiggle 1s ease-in-out infinite; }
+.animate-gradient-shift { animation: gradient-shift 8s ease infinite; }
+.animate-neon-pulse { animation: neon-pulse 2s ease-in-out infinite; }
+.animate-subtle-float { animation: subtle-float 3s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 10s linear infinite; }
+.animate-glitch-flicker { animation: glitch-flicker 3s ease-in-out infinite; }
+
+/* Typewriter special — applied to text containers */
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--t-primary, #ff6b9d);
+  animation: typewriter-cursor 0.75s step-end infinite;
+  width: 0;
+  animation: 
+    typing 2s steps(30) 0.5s forwards,
+    typewriter-cursor 0.75s step-end infinite;
+}
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
 }
 
-.animate-pulse-heart {
-  animation: pulse-heart 1.5s ease-in-out infinite;
-}
+/* ═══════════════════════════ */
+/*     FONT ACTIVE SYSTEM      */
+/* ═══════════════════════════ */
 
-.animate-wiggle {
-  animation: wiggle 1s ease-in-out infinite;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
+.font-active-sans { font-family: var(--font-sans-active, var(--font-quicksand)); }
+.font-active-cursive { font-family: var(--font-cursive-active, var(--font-dancing)); }
